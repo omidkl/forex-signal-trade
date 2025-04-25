@@ -7,19 +7,25 @@ const requestSignalBtn = document.getElementById('requestSignal');
 
 async function fetchPrice() {
   try {
-    const res = await fetch('https://api.exchangerate.host/latest?base=XAU&symbols=USD');
-    const data = await res.json();
-    const price = data.rates?.USD?.toFixed(2);
-    if (price) priceElement.textContent = `$${price}`;
-    return parseFloat(price);
-  } catch (error) {
-    priceElement.textContent = 'Error loading price';
+    const response = await fetch('https://api.exchangerate.host/convert?from=XAU&to=USD');
+    const data = await response.json();
+    const price = data.result;
+    if (price) {
+      priceElement.textContent = '$' + price.toFixed(2);
+      return price;
+    } else {
+      priceElement.textContent = 'Unavailable';
+      return null;
+    }
+  } catch (err) {
+    priceElement.textContent = 'Error';
     return null;
   }
 }
 
 function generateSignal(price) {
-  if (signalCount >= maxSignals) return;
+  if (signalCount >= maxSignals || !price) return;
+
   const direction = Math.random() > 0.5 ? 'BUY' : 'SELL';
   const entry = price.toFixed(2);
   const tp = direction === 'BUY' ? (price + 5).toFixed(2) : (price - 5).toFixed(2);
@@ -29,14 +35,14 @@ function generateSignal(price) {
   card.className = 'signal-card';
   card.innerHTML = `<strong>${direction}</strong> at <strong>${entry}</strong><br/>TP: ${tp} | SL: ${sl}`;
   signalList.appendChild(card);
+
   signalCount++;
   signalCounter.textContent = signalCount;
 }
 
 requestSignalBtn.addEventListener('click', async () => {
   const price = await fetchPrice();
-  if (price) generateSignal(price);
+  generateSignal(price);
 });
 
-// Initialize price on load
-fetchPrice();
+fetchPrice(); // Initial load

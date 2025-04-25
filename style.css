@@ -21,10 +21,11 @@ h1, h2 {
   text-align: center;
 }
 #price-container, #signals, #stats {
-  background-color: rgba(255, 255, 255, 0.8);
+  background-color: rgba(255, 255, 255, 0.9);
   padding: 15px;
   border-radius: 10px;
   margin-top: 15px;
+  box-shadow: 0px 0px 15px rgba(0,0,0,0.1);
 }
 #signal-list {
   margin-top: 10px;
