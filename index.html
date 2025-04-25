@@ -1,119 +1,26 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Live Forex Signals</title>
-  <style>
-    body {
-      margin: 0;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background-color: #0d1117;
-      color: #fff;
-      text-align: center;
-    }
-    h1 {
-      margin-top: 20px;
-      font-size: 2.5em;
-      color: #58a6ff;
-    }
-    .card {
-      background: linear-gradient(145deg, #161b22, #1c2128);
-      border-radius: 20px;
-      margin: 20px auto;
-      padding: 20px;
-      width: 90%;
-      max-width: 400px;
-      box-shadow: 0 4px 30px rgba(0,0,0,0.2);
-      transition: transform 0.3s ease;
-    }
-    .card:hover {
-      transform: scale(1.02);
-    }
-    .pair {
-      font-size: 1.5em;
-      margin-bottom: 10px;
-    }
-    .price, .signal, .entry {
-      font-size: 1.2em;
-      margin: 5px 0;
-    }
-    .signal.buy {
-      color: #2ecc71;
-    }
-    .signal.sell {
-      color: #e74c3c;
-    }
-    #refresh {
-      background-color: #238636;
-      border: none;
-      color: white;
-      padding: 10px 20px;
-      margin: 20px auto;
-      display: block;
-      font-size: 1em;
-      border-radius: 10px;
-      cursor: pointer;
-    }
-  </style>
+  <title>Forex Signals - XAU/USD</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <h1>Live Forex Signals</h1>
-
-  <div class="card">
-    <div class="pair">Gold/USD (XAU/USD)</div>
-    <div class="price" id="price-xau">Price: Loading...</div>
-    <div class="entry">Entry: 2315.00 | SL: 2310 | TP: 2322</div>
-    <div class="signal sell">Signal: SELL</div>
+  <div class="container">
+    <h1>Forex Signal Center</h1>
+    <div id="stats">
+      <p><strong>Signals today:</strong> <span id="signalCount">0</span>/10</p>
+    </div>
+    <div id="price-container">
+      <h2>XAU/USD Price:</h2>
+      <p id="price">Loading...</p>
+    </div>
+    <div id="signals">
+      <h2>Today’s Signals (M5 & M15)</h2>
+      <div id="signal-list"></div>
+    </div>
   </div>
-
-  <div class="card">
-    <div class="pair">Euro/USD (EUR/USD)</div>
-    <div class="price" id="price-eur">Price: Loading...</div>
-    <div class="entry">Entry: 1.0850 | SL: 1.0875 | TP: 1.0815</div>
-    <div class="signal sell">Signal: SELL</div>
-  </div>
-
-  <div class="card">
-    <div class="pair">USD/CHF</div>
-    <div class="price" id="price-chf">Price: Loading...</div>
-    <div class="entry">Entry: 0.9120 | SL: 0.9140 | TP: 0.9090</div>
-    <div class="signal sell">Signal: SELL</div>
-  </div>
-
-  <div class="card">
-    <div class="pair">AUD/NZD</div>
-    <div class="price" id="price-aud">Price: Loading...</div>
-    <div class="entry">Entry: 1.0720 | SL: 1.0700 | TP: 1.0755</div>
-    <div class="signal buy">Signal: BUY</div>
-  </div>
-
-  <button id="refresh" onclick="fetchAll()">Manual Refresh</button>
-  <script>
-
-async function fetchForex(pair, elementId) {
-  try {
-    const url = `https://www.alphavantage.co/query?function=CURRENCY_EXCHANGE_RATE&from_currency=${pair.split('/')[0]}&to_currency=${pair.split('/')[1]}&apikey=0VV1NICYJQOETYH6`;
-    const res = await fetch(url);
-    const data = await res.json();
-    const rate = data["Realtime Currency Exchange Rate"]["5. Exchange Rate"];
-    document.getElementById(elementId).innerText = `Price: ${parseFloat(rate).toFixed(4)}`;
-  } catch (error) {
-    document.getElementById(elementId).innerText = "Price: Error";
-  }
-}
-
-function fetchAll() {
-  fetchForex("XAU/USD", "price-xau");
-  fetchForex("EUR/USD", "price-eur");
-  fetchForex("USD/CHF", "price-chf");
-  fetchForex("AUD/NZD", "price-aud");
-}
-
-setInterval(fetchAll, 60000); // Auto-refresh every 60s
-window.onload = fetchAll;
-
-  </script>
+  <script src="script.js"></script>
 </body>
 </html>

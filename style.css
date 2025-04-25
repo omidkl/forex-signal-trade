@@ -1,0 +1,31 @@
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(to right, #1f4037, #99f2c8);
+  margin: 0;
+  padding: 0;
+  color: #fff;
+}
+.container {
+  max-width: 800px;
+  margin: auto;
+  padding: 20px;
+}
+h1, h2 {
+  text-align: center;
+}
+#price-container, #signals {
+  background-color: rgba(0, 0, 0, 0.3);
+  padding: 15px;
+  border-radius: 10px;
+  margin-top: 15px;
+}
+#signal-list {
+  margin-top: 10px;
+}
+.signal-card {
+  background-color: rgba(255, 255, 255, 0.1);
+  padding: 10px;
+  margin: 5px 0;
+  border-radius: 8px;
+  border-left: 5px solid #00ffc8;
+}
