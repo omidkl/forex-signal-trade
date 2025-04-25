@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Forex Signal</title>
+  <style>
+    body { font-family: sans-serif; background: #f8f9fa; padding: 20px; }
+    .card { background: white; padding: 16px; border-radius: 12px; margin: 12px 0; box-shadow: 0 2px 6px rgba(0,0,0,0.1); }
+    .title { font-size: 18px; font-weight: bold; }
+    .price { margin-top: 6px; }
+    .signal { margin-top: 10px; font-weight: bold; }
+  </style>
+</head>
+<body>
+  <h1>Live Forex Signals</h1>
+  <div id="content">Loading...</div>
+
+  <script>
+    const pairs = [
+      { symbol: "XAU/USD", label: "Gold/USD" },
+      { symbol: "EUR/USD", label: "Euro/USD" },
+      { symbol: "USD/CHF", label: "USD/Swiss Franc" },
+      { symbol: "AUD/NZD", label: "AUD/NZD" }
+    ];
+
+    async function fetchData() {
+      const content = document.getElementById('content');
+      content.innerHTML = "";
+      for (let pair of pairs) {
+        try {
+          const response = await fetch(`https://api.twelvedata.com/price?symbol=${pair.symbol.replace("/", "")}&apikey=demo`);
+          const data = await response.json();
+          const price = parseFloat(data.price).toFixed(4);
+          const signal = (price % 2 < 1) ? "BUY" : "SELL";
+
+          const card = document.createElement('div');
+          card.className = "card";
+          card.innerHTML = `
+            <div class="title">${pair.label}</div>
+            <div class="price">Price: ${price}</div>
+            <div class="signal">Signal: <span style="color:${signal === "BUY" ? "green" : "red"}">${signal}</span></div>
+          `;
+          content.appendChild(card);
+        } catch (err) {
+          content.innerHTML += `<div class="card">Error loading ${pair.label}</div>`;
+        }
+      }
+    }
+
+    fetchData();
+    setInterval(fetchData, 60000);
+  </script>
+</body>
+</html>
