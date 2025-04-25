@@ -1,9 +1,16 @@
 body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background: linear-gradient(to right, #1f4037, #99f2c8);
+  background: linear-gradient(135deg, #c2e9fb, #d4fc79, #fbc2eb);
+  background-size: 400% 400%;
+  animation: gradientBG 15s ease infinite;
   margin: 0;
   padding: 0;
-  color: #fff;
+  color: #333;
+}
+@keyframes gradientBG {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
 }
 .container {
   max-width: 800px;
@@ -13,8 +20,8 @@ body {
 h1, h2 {
   text-align: center;
 }
-#price-container, #signals {
-  background-color: rgba(0, 0, 0, 0.3);
+#price-container, #signals, #stats {
+  background-color: rgba(255, 255, 255, 0.8);
   padding: 15px;
   border-radius: 10px;
   margin-top: 15px;
@@ -23,9 +30,22 @@ h1, h2 {
   margin-top: 10px;
 }
 .signal-card {
-  background-color: rgba(255, 255, 255, 0.1);
+  background-color: rgba(0, 0, 0, 0.05);
   padding: 10px;
   margin: 5px 0;
   border-radius: 8px;
-  border-left: 5px solid #00ffc8;
+  border-left: 5px solid #6a11cb;
+}
+#requestSignal {
+  margin-top: 10px;
+  padding: 10px 20px;
+  font-size: 16px;
+  border: none;
+  background-color: #6a11cb;
+  color: white;
+  border-radius: 8px;
+  cursor: pointer;
+}
+#requestSignal:hover {
+  background-color: #2575fc;
 }

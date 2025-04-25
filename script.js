@@ -3,8 +3,8 @@ const maxSignals = 10;
 const signalList = document.getElementById('signal-list');
 const signalCounter = document.getElementById('signalCount');
 const priceElement = document.getElementById('price');
+const requestSignalBtn = document.getElementById('requestSignal');
 
-// Fetch live price (using demo source)
 async function fetchPrice() {
   try {
     const res = await fetch('https://api.exchangerate.host/latest?base=XAU&symbols=USD');
@@ -18,7 +18,6 @@ async function fetchPrice() {
   }
 }
 
-// Simple signal logic based on random momentum direction
 function generateSignal(price) {
   if (signalCount >= maxSignals) return;
   const direction = Math.random() > 0.5 ? 'BUY' : 'SELL';
@@ -34,13 +33,10 @@ function generateSignal(price) {
   signalCounter.textContent = signalCount;
 }
 
-async function init() {
+requestSignalBtn.addEventListener('click', async () => {
   const price = await fetchPrice();
-  if (price) {
-    for (let i = 0; i < maxSignals; i++) {
-      generateSignal(price);
-    }
-  }
-}
+  if (price) generateSignal(price);
+});
 
-init();
+// Initialize price on load
+fetchPrice();
