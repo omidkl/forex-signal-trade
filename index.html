@@ -35,7 +35,7 @@
       font-size: 1.5em;
       margin-bottom: 10px;
     }
-    .price, .signal {
+    .price, .signal, .entry {
       font-size: 1.2em;
       margin: 5px 0;
     }
@@ -60,26 +60,60 @@
 </head>
 <body>
   <h1>Live Forex Signals</h1>
+
   <div class="card">
-    <div class="pair">Gold/USD</div>
-    <div class="price">Price: 2315.32</div>
+    <div class="pair">Gold/USD (XAU/USD)</div>
+    <div class="price" id="price-xau">Price: Loading...</div>
+    <div class="entry">Entry: 2315.00 | SL: 2310 | TP: 2322</div>
     <div class="signal sell">Signal: SELL</div>
   </div>
+
   <div class="card">
-    <div class="pair">Euro/USD</div>
-    <div class="price">Price: 1.0854</div>
-    <div class="signal buy">Signal: BUY</div>
+    <div class="pair">Euro/USD (EUR/USD)</div>
+    <div class="price" id="price-eur">Price: Loading...</div>
+    <div class="entry">Entry: 1.0850 | SL: 1.0875 | TP: 1.0815</div>
+    <div class="signal sell">Signal: SELL</div>
   </div>
+
   <div class="card">
     <div class="pair">USD/CHF</div>
-    <div class="price">Price: 0.9123</div>
+    <div class="price" id="price-chf">Price: Loading...</div>
+    <div class="entry">Entry: 0.9120 | SL: 0.9140 | TP: 0.9090</div>
     <div class="signal sell">Signal: SELL</div>
   </div>
+
   <div class="card">
     <div class="pair">AUD/NZD</div>
-    <div class="price">Price: 1.0721</div>
+    <div class="price" id="price-aud">Price: Loading...</div>
+    <div class="entry">Entry: 1.0720 | SL: 1.0700 | TP: 1.0755</div>
     <div class="signal buy">Signal: BUY</div>
   </div>
-  <button id="refresh" onclick="location.reload()">Refresh</button>
+
+  <button id="refresh" onclick="fetchAll()">Manual Refresh</button>
+  <script>
+
+async function fetchForex(pair, elementId) {
+  try {
+    const url = `https://www.alphavantage.co/query?function=CURRENCY_EXCHANGE_RATE&from_currency=${pair.split('/')[0]}&to_currency=${pair.split('/')[1]}&apikey=0VV1NICYJQOETYH6`;
+    const res = await fetch(url);
+    const data = await res.json();
+    const rate = data["Realtime Currency Exchange Rate"]["5. Exchange Rate"];
+    document.getElementById(elementId).innerText = `Price: ${parseFloat(rate).toFixed(4)}`;
+  } catch (error) {
+    document.getElementById(elementId).innerText = "Price: Error";
+  }
+}
+
+function fetchAll() {
+  fetchForex("XAU/USD", "price-xau");
+  fetchForex("EUR/USD", "price-eur");
+  fetchForex("USD/CHF", "price-chf");
+  fetchForex("AUD/NZD", "price-aud");
+}
+
+setInterval(fetchAll, 60000); // Auto-refresh every 60s
+window.onload = fetchAll;
+
+  </script>
 </body>
 </html>
